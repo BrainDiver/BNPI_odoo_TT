@@ -1,67 +1,33 @@
 <odoo>
   <data>
-<!--    <record id="action_product" model="ir.actions.act_window">
-      <field name="name">Товар</field>
-      <field name="res_model">product.product</field>
-    </record>
-
-    <menuitem sequence="0" id="menu_product" name="Добавление Товара"/> -->
-
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="product_labeling.list">
-      <field name="name">product_labeling list</field>
-      <field name="model">product_labeling.product_labeling</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
--->
-
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="product_labeling.action_window">
-      <field name="name">product_labeling window</field>
-      <field name="res_model">product_labeling.product_labeling</field>
+    <record id="action_add_product" model="ir.actions.act_window">
+      <field name="name">Товары</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">product.model</field>
       <field name="view_mode">tree,form</field>
-    </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="product_labeling.action_server">
-      <field name="name">product_labeling server</field>
-      <field name="model_id" ref="model_product_labeling_product_labeling"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p>
+          Добавьте Товар
+        </p>
       </field>
     </record>
--->
 
-    <!-- Top menu item -->
-<!--
-    <menuitem name="product_labeling" id="product_labeling.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="product_labeling.menu_1" parent="product_labeling.menu_root"/>
-    <menuitem name="Menu 2" id="product_labeling.menu_2" parent="product_labeling.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="product_labeling.menu_1_list" parent="product_labeling.menu_1"
-              action="product_labeling.action_window"/>
-    <menuitem name="Server to list" id="product_labeling" parent="product_labeling.menu_2"
-              action="product_labeling.action_server"/>
--->
+    <record id="action_add_properties" model="ir.actions.act_window">
+      <field name="name">Акты</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">properties.properties</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p>
+          Добавьте акт изменения свойств товара
+        </p>
+      </field>
+    </record>
+
+    <menuitem sequence="10" id="menu_product" name="Маркировка Товара"/>
+    <menuitem id="menu_product_content_add" parent="menu_product" name="Добавить Товар" action="action_add_product" sequence="0" />
+    <menuitem id="menu_product_properties_add" parent="menu_product" name="Добавить акт изменения свойств товара" action="action_add_properties" sequence="1"/>
   </data>
 </odoo>
