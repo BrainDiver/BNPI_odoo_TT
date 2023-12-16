@@ -1,5 +1,37 @@
+
 <odoo>
   <data>
+    <!-- Настраиваем вид формы действия и добавляем нужные нам поля-->
+    <record id="properties_model_form_view" model="ir.ui.view">
+      <field name="name">properties.properties.form</field>
+      <field name="model">properties.properties</field>
+      <field name="arch" type="xml">
+        <form string="Акт изменения свойств товара">
+            <group colspan="2" col="2">
+              <separator string="Добавление акта изменения свойств товара" colspan="4"/>             
+              <field name="create_date"/>
+              <field name="status"/>
+              <field name="stock_from" invisible="status == 'покупка'" required="status == 'продажа'"/>
+              <field name="stock_where"/>
+              <field name="product"/>
+              <field name="count" placeholder="Введите количество товара"/>
+            </group>
+            <group colspan="2" col="2">
+              <separator string="Затраты/Приходы" colspan="4"/>-->
+              <field name="cost">
+                <tree editable="bottom">
+                  <field name="properties"/>
+                  <field name="expenses_description"/>
+                  <field name="commission"/>
+                  <field name="sale"/>
+                </tree>
+              </field>
+            </group>
+        </form>
+      </field>
+    </record>
+    
+    <!-- Создаем Действие для создания товара -->
     <record id="action_add_product" model="ir.actions.act_window">
       <field name="name">Товары</field>
       <field name="type">ir.actions.act_window</field>
@@ -12,7 +44,8 @@
         </p>
       </field>
     </record>
-
+    
+    <!-- Создаем Действие для создания акта изменения свойств товара -->
     <record id="action_add_properties" model="ir.actions.act_window">
       <field name="name">Акты</field>
       <field name="type">ir.actions.act_window</field>
@@ -26,6 +59,7 @@
       </field>
     </record>
 
+    <!-- Добавляем наш модуль в меню и создаем подменю для разных действий-->
     <menuitem sequence="10" id="menu_product" name="Маркировка Товара"/>
     <menuitem id="menu_product_content_add" parent="menu_product" name="Добавить Товар" action="action_add_product" sequence="0" />
     <menuitem id="menu_product_properties_add" parent="menu_product" name="Добавить акт изменения свойств товара" action="action_add_properties" sequence="1"/>
