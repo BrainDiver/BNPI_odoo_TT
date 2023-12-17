@@ -1,13 +1,98 @@
 
 <odoo>
   <data>
-    <!-- Настраиваем вид формы действия и добавляем нужные нам поля-->
+    <!-- Настраиваем вид карточек действия маркированых товаров и добавляем нужные нам поля-->
+    <record id="marked_product_model_kanban_view" model="ir.ui.view">
+      <field name="name">marked_product.model.kanban</field>
+      <field name="model">marked_product.model</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="id"/>
+          <field name="product"/>
+          <field name="last_status"/>
+          <field name="last_stock"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div t-attf-class="oe_kanban_global_click">
+                <div class="oe_kanban_details">
+                    <strong class="o_kanban_record_title">
+                    <field name="id"/>
+                    </strong>
+                </div>
+                <div>
+                    <strong class="o_kanban_record_title">
+                    <field name="product"/>
+                    </strong>
+                </div>
+                <div>
+                    <strong class="o_kanban_record_title">
+                    <field name="last_status"/>
+                    </strong>
+                </div>
+                <div>
+                    <strong class="o_kanban_record_title">
+                    <field name="last_stock"/>
+                    </strong>
+                </div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+    <!-- Настраиваем вид формы действия маркированых товаров и добавляем нужные нам поля -->
+    <record id="marked_product_model_form_view" model="ir.ui.view">
+      <field name="name">marked_product.model.form</field>
+      <field name="model">marked_product.model</field>
+      <field name="arch" type="xml">
+        <form string="Маркированный товар">
+          <group colspan="2" col="2">
+            <separator string="Карточка Маркированого Товара" colspan="4"/>
+            <field name="product"/>
+            <field name="last_stock"/>
+            <field name="last_status"/>
+          </group>
+          <group colspan="2" col="2">
+            <separator string="Затраты/Приходы" colspan="4"/>
+            <field name="cost" string="cost">
+                <tree editable="bottom">
+                  <field name="properties"/>
+                  <field name="date"/>
+                  <field name="expenses_description"/>
+                  <field name="value"/>
+                </tree>
+            </field>
+          </group>
+        </form>
+      </field>
+    </record>
+    <!-- Настраиваем вид дерева действия акта и добавляем нужные нам поля-->
+    <record id="properties_model_tree_view" model="ir.ui.view">
+      <field name="name">properties.properties.tree</field>
+      <field name="model">properties.properties</field>
+      <field name="arch" type="xml">
+        <tree string="Акты изменения свойств товаров">
+          <field name="id"/>
+          <field name="product"/>
+          <field name="status"/>
+          <field name="count"/>
+          <field name="create_date"/>
+        </tree>
+      </field>
+    </record>    
+
+    <!-- Настраиваем вид формы действия акта и добавляем нужные нам поля-->
     <record id="properties_model_form_view" model="ir.ui.view">
       <field name="name">properties.properties.form</field>
       <field name="model">properties.properties</field>
       <field name="arch" type="xml">
         <form string="Акт изменения свойств товара">
             <group colspan="2" col="2">
+              <button name="confirm_act" string="Провести Акт" type="object" class="oe_highlight" 
+                      context="{'status': status, 
+                                'stock_where':stock_where,
+                                'product':product,
+                                'count':count}" />
               <separator string="Добавление акта изменения свойств товара" colspan="4"/>             
               <field name="create_date"/>
               <field name="status"/>
@@ -17,13 +102,13 @@
               <field name="count" placeholder="Введите количество товара"/>
             </group>
             <group colspan="2" col="2">
-              <separator string="Затраты/Приходы" colspan="4"/>-->
+              <separator string="Затраты/Приходы" colspan="4"/>
               <field name="cost">
                 <tree editable="bottom">
                   <field name="properties"/>
+                  <field name="date"/>
                   <field name="expenses_description"/>
-                  <field name="commission"/>
-                  <field name="sale"/>
+                  <field name="value"/>
                 </tree>
               </field>
             </group>
@@ -59,9 +144,23 @@
       </field>
     </record>
 
+    <record id="action_read_marked_product" model="ir.actions.act_window">
+      <field name="name">Маркированые товары</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">marked_product.model</field>
+      <field name="view_mode">kanban,form</field>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p>
+          Отмаркированные товары будут здесь
+        </p>
+      </field> 
+    </record>
+
     <!-- Добавляем наш модуль в меню и создаем подменю для разных действий-->
     <menuitem sequence="10" id="menu_product" name="Маркировка Товара"/>
     <menuitem id="menu_product_content_add" parent="menu_product" name="Добавить Товар" action="action_add_product" sequence="0" />
     <menuitem id="menu_product_properties_add" parent="menu_product" name="Добавить акт изменения свойств товара" action="action_add_properties" sequence="1"/>
+    <menuitem id="menu_marked_product_view" parent="menu_product" name="Маркированые товары" action="action_read_marked_product" sequence="2"/>
   </data>
 </odoo>
